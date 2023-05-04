@@ -1,30 +1,65 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
+	import List from "./components/list.vue";
+	const me = [1, 2, 3, 5];
+
+	const createTodo = (e) => {
+		console.log("sent");
+		e.preventDefault();
+	};
 </script>
 
 <template>
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
-  </div>
-  <HelloWorld msg="Vite + Vue" />
+	<div class="form">
+		<h1>Todo List</h1>
+		<div @click.prevent="createTodo">
+			<input
+				type="text"
+				placeholder="Add New Todo"
+				class="newTodo" />
+		</div>
+
+		<ul class="to-dos">
+			<List v-for="x in me" />
+		</ul>
+	</div>
 </template>
 
-<style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
-}
+<style scoped lang="scss">
+	@use "./styles/utilities.scss" as *;
+
+	.form {
+		max-width: px-to-rem(300px);
+		background-color: #1f1f1f;
+		min-height: px-to-rem(300px);
+		margin-inline: auto;
+		width: 100%;
+		aspect-ratio: 1;
+		border-radius: px-to-rem(16px);
+		padding: px-to-rem(16px) px-to-rem(24px);
+		display: flex;
+		flex-direction: column;
+
+		// Text
+		h1 {
+			color: #fff;
+			font-size: px-to-rem(24px);
+			text-align: center;
+			margin-block: px-to-rem(16px);
+		}
+
+		.newTodo {
+			background-color: transparent;
+			border: none;
+			padding: px-to-rem(8px);
+			border: 1.2px solid #ffffff2a;
+			border-radius: px-to-rem(8px);
+		}
+		.to-dos {
+			text-align: left;
+
+			& > * + * {
+				margin-top: px-to-rem(8px);
+			}
+		}
+	}
 </style>

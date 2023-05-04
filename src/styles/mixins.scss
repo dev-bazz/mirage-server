@@ -1,0 +1,68 @@
+@mixin custom-media-query($device-type, $width) {
+	@if $device-type == "mobile" {
+		@media (max-width: $width) {
+			@content;
+		}
+	} @else if $device-type == "desktop" {
+		@media (min-width: $width) {
+			@content;
+		}
+	} @else {
+		@warn 'Invalid argument for custom-media-query mixin. Please use mobile or desktop.';
+	}
+}
+
+@mixin animation(
+	$name,
+	$duration,
+	$delay,
+	$iteration-count,
+	$direction,
+	$timing-function,
+	$fill-mode
+) {
+	animation-name: $name;
+	animation-duration: $duration;
+	animation-delay: $delay;
+	animation-iteration-count: $iteration-count;
+	animation-direction: $direction;
+	animation-timing-function: $timing-function;
+	animation-fill-mode: $fill-mode;
+	-webkit-animation-name: $name;
+	-webkit-animation-duration: $duration;
+	-webkit-animation-delay: $delay;
+	-webkit-animation-iteration-count: $iteration-count;
+	-webkit-animation-direction: $direction;
+	-webkit-animation-timing-function: $timing-function;
+	-webkit-animation-fill-mode: $fill-mode;
+}
+
+@-webkit-keyframes slide-up {
+	0% {
+		transform: translateY(100%);
+		opacity: 0;
+	}
+
+	40% {
+		opacity: 1;
+	}
+	100% {
+		transform: translateY(0);
+		opacity: 1;
+	}
+}
+
+@keyframes slide-up {
+	0% {
+		transform: translateY(100%);
+		opacity: 0;
+	}
+
+	40% {
+		opacity: 1;
+	}
+	100% {
+		transform: translateY(0);
+		opacity: 1;
+	}
+}
