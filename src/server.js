@@ -50,5 +50,13 @@ export const server = createServer({
 				],
 			};
 		});
+
+		this.post("/todo-list/", (schema, request) => {
+			let attrs = {};
+			attrs.id = Math.floor(Math.random() * 100);
+			attrs.title = JSON.parse(request.requestBody);
+
+			return { todoList: attrs };
+		});
 	},
 });

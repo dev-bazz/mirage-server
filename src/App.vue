@@ -3,18 +3,40 @@
 	import { server } from "./server.js";
 	import List from "./components/list.vue";
 
-	const createTodo = (e) => {
-		console.log("sent");
-		e.preventDefault();
-	};
-
+	const todoItems = ref("");
 	const todos = ref([]);
 
 	const getTodo = async (e) => {
 		const data = await fetch("/api/todo-list");
 		const response = JSON.parse(data._bodyInit);
 		todos.value = response.todoList;
-		console.log(data, response);
+		console.log(response);
+	};
+
+	const createTodo = async (e) => {
+		try {
+			e.preventDefault();
+			if (todoItems.value === "") return;
+			const data = await fetch("/api/todo-list", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify(todoItems.value),
+			});
+
+			const response = data;
+
+			if (!response.ok) {
+				throw new Error(response.statusText);
+			}
+
+			alert(response.statusText);
+			getTodo();
+			todoItems.value = "";
+			console.log(response);
+		} catch (error) {
+			throw new Error(error);
+			alert("Not Good");
+		}
 	};
 
 	onMounted(() => {
@@ -26,12 +48,13 @@
 <template>
 	<div class="form">
 		<h1>Todo List</h1>
-		<div @click.prevent="createTodo">
+		<form @submit.prevent="createTodo">
 			<input
+				v-model="todoItems"
 				type="text"
 				placeholder="Add New Todo"
 				class="newTodo" />
-		</div>
+		</form>
 
 		<ul class="to-dos">
 			<List
