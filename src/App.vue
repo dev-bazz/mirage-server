@@ -1,56 +1,63 @@
 <script setup>
-	import { onMounted, ref } from "vue";
-	import { server } from "./server.js";
+	import { onMounted, ref, reactive } from "vue";
+	import { server } from "./server/server.js";
 	import List from "./components/list.vue";
 
-	const todoItems = ref("");
+	const todoItems = reactive({
+		title: "",
+		done: false,
+	});
 	const todos = ref([]);
+	const element = ref(null);
+	const text = ref(null);
 
 	const getTodo = async (e) => {
 		const data = await fetch("/api/todo-list");
 		const response = JSON.parse(data._bodyInit);
-		todos.value = response.todoList;
 		console.log(response);
+		todos.value = response;
 	};
 
 	const createTodo = async (e) => {
+		console.log(todoItems);
 		try {
 			e.preventDefault();
-			if (todoItems.value === "") return;
+			if (todoItems.title === "") return;
 			const data = await fetch("/api/todo-list", {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify(todoItems.value),
+				body: JSON.stringify(todoItems),
 			});
 
 			const response = data;
 
 			if (!response.ok) {
-				throw new Error(response.statusText);
+				return alert("Net work issues try again");
 			}
 
-			alert(response.statusText);
+			element.value.showModal();
 			getTodo();
-			todoItems.value = "";
-			console.log(response);
+			todoItems.title = "";
 		} catch (error) {
 			throw new Error(error);
 			alert("Not Good");
 		}
 	};
 
+	const closeModal = () => {
+		element.value.close();
+	};
 	onMounted(() => {
-		console.log("mounted");
 		getTodo();
 	});
 </script>
 
 <template>
 	<div class="form">
-		<h1>Todo List</h1>
+		<h1 ref="text">Todo List</h1>
 		<form @submit.prevent="createTodo">
 			<input
-				v-model="todoItems"
+				v-model="todoItems.title"
 				type="text"
 				placeholder="Add New Todo"
 				class="newTodo" />
@@ -62,6 +69,13 @@
 				:todoText="todo.title" />
 		</ul>
 	</div>
+	<dialog ref="element">
+		<div class="poo">
+			<h4>Success</h4>
+			<p>Greate Job</p>
+			<button @click="closeModal">Close</button>
+		</div>
+	</dialog>
 </template>
 
 <style scoped lang="scss">
