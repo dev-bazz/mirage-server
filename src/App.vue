@@ -66,7 +66,8 @@
 		<ul class="to-dos">
 			<List
 				v-for="todo in todos"
-				:todoText="todo.title" />
+				:todoText="todo.title"
+				:done="todo.done" />
 		</ul>
 	</div>
 	<dialog ref="element">

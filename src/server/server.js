@@ -10,7 +10,7 @@ export const server = createServer({
 			todo: [
 				{ title: "Get Out of Bed", done: false, id: 1 },
 				{ title: "Brush Teeth", done: false, id: 2 },
-				{ title: "Take a Shower", done: false, id: 3 },
+				{ title: "Take a Shower", done: true, id: 3 },
 			],
 		});
 	},

@@ -15,12 +15,13 @@
 	import { ref, withDefaults, computed } from "vue";
 	interface Props {
 		todoText: string;
+		done: boolean;
 	}
-	withDefaults(defineProps<Props>(), {
+	const props =withDefaults(defineProps<Props>(), {
 		todoText: "Todo",
 	});
 
-	const todo = ref(false);
+	const todo = ref(props.done);
 
 	const todoTextClass = computed(() => {
 		return todo ? "done" : "not-done";
